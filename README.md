@@ -9,13 +9,13 @@ Clone or download this repo.
 
 0.) [NodeJs](https://nodejs.org/en/)
 
-1.) [Chocolatey](https://chocolatey.org/install#requirements)
+1.) [Chocolatey](https://chocolatey.org/install#requirements) - Windows only
 
 2.) [Meteor](https://www.meteor.com/)
 
 ### Installing
 
-Installing Chocolatey: 
+Installing Chocolatey (Windows): 
 
 You can go to this [link](https://chocolatey.org/install#requirements) and follow the instructions.
 Or follow what I did instead:
@@ -31,6 +31,16 @@ To test Choco, run this in your command line:
     choco
 
 It'll show you the version of your Chocolatey.
+
+Installing Meteor:
+
+For Windows
+
+    choco install meteor
+
+For OSX/Linux
+
+    curl https://install.meteor.com/ | sh
 
 Assuming you already did clone this repo, run the following commands:
 
