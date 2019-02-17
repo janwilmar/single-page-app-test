@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import {
