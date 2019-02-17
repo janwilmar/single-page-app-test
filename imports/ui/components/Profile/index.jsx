@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import {
-    Container, Col, FormGroup, Label, Input, Row,
+    Container, Col, Form, FormGroup, Label, Input, Button, Row, Alert
 } from 'reactstrap';
 
 class Profile extends Component {
@@ -10,7 +10,7 @@ class Profile extends Component {
     render() {
         const { currentUser } = this.props;
         const email = (!!currentUser) && (currentUser.emails) ? currentUser.emails[0].address : '(email)';
-
+        
         return (
             <Container style={__style.container}>
                 <h2>Profile</h2>

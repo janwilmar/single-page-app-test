@@ -1,100 +1,51 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-
-import {
-    Form, FormGroup, InputGroup, ListGroup, Label, Input, Container, Row, Col, InputGroupAddon,
-    Button,
-} from 'reactstrap';
+import { ListGroupItem, Button } from 'reactstrap';
 
 import { Tasks } from '../../../api/tasks.js';
-import Task from './Task.js';
 
-class Home extends Component {
-    constructor() {
-        super();
-        this.state = {
-            task: '',
-        }
-    }
-
-    _handleSubmitForm(event) {
-        event.preventDefault();
-        const { task } = this.state;
-        Tasks.insert({
-            text: task,
-            createdAt: new Date(),
-            checked: false,
-            owner: Meteor.userId(),
-        }, (err) => {
-            err ?
-                console.log(err.reason)
-                :
-                this.setState({ task: '' })
+export default class Task extends Component {
+    _handleToggleCheckbox = () => {
+        Tasks.update(this.props.task._id, {
+            $set: { checked: !this.props.task.checked },
         });
     }
 
-    _renderTasks() {
-        return this.props.tasks.map((task) => (
-            <Task key={task._id} task={task} />
-        ));
-    }
-
-    _handleOnChange = (event) => {
-        const { target } = event;
-        this.setState({ [target.name]: target.value });
+    _handleDeleteTask = () => {
+        Tasks.remove(this.props.task._id);
     }
 
     render() {
-        const { task } = this.state;
+        const { task } = this.props;
+        const taskStatus = task.checked ? 'success' : '';
         return (
-            <Container style={__style.container}>
-                <h2>Home <small>Todo list ({this.props.incompleteCount})</small></h2>
-                <Form style={__style.form} onSubmit={(e) => { this._handleSubmitForm(e) }}>
-                    <Row form>
-                        <Col md={{ size: 6, offset: 3 }}>
-                            <FormGroup>
-                                <InputGroup>
-                                    <Input
-                                        type="text"
-                                        name="task"
-                                        id="homeTask"
-                                        onChange={this._handleOnChange}
-                                        placeholder={'Type a task here...'}
-                                        value={task}
-                                        autoComplete={'off'} required />
-                                    <InputGroupAddon addonType="append">
-                                        <Button>Save</Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                </Form>
-                <Row>
-                    <Col md={{ size: 6, offset: 3 }}>
-                        <ListGroup>
-                            {this._renderTasks()}
-                        </ListGroup>
-                    </Col>
-                </Row>
-            </Container>
+            <ListGroupItem color={taskStatus}>
+                {task.text}
+                <span style={__style.floatLeft}>
+                    <input
+                        type="checkbox"
+                        readOnly
+                        checked={!!this.props.task.checked}
+                        onClick={this._handleToggleCheckbox}
+                    />
+                </span>
+                <span style={__style.floatRight}>
+                    <Button
+                        outline
+                        color="danger"
+                        size="sm"
+                        onClick={this._handleDeleteTask}>Remove</Button>
+                </span>
+            </ListGroupItem>
         );
     }
 }
 
-export default withTracker(() => {
-    return {
-        tasks: Tasks.find({ owner: Meteor.userId() }, { sort: { createdAt: -1 } }).fetch(),
-        incompleteCount: Tasks.find({ owner: Meteor.userId(), checked: { $ne: true } }).count(),
-        currentUser: Meteor.user(),
-    };
-})(Home);
-
 const __style = {
-    container: {
-        textAlign: 'left',
+    floatLeft: {
+        float: 'left',
+        marginRight: '10px',
     },
-    form: {
-        padding: '1em',
+    floatRight: {
+        float: 'right',
     }
 }
