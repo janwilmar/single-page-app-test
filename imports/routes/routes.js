@@ -7,7 +7,9 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import Register from './../ui/components/Register/index.jsx';
 import Login from './../ui/components/Login/index.jsx';
 import NavBar from '../ui/components/NavBar/index.jsx';
+import Profile from './../ui/components/Profile/index.jsx';
 import Home from './../ui/components/Home/index.jsx';
+import NotFound from './../ui/components/Static/NotFound.jsx';
 
 const history = createBrowserHistory();
 
@@ -30,6 +32,8 @@ export const routes = (
                 <Route exact path='/' render={() => (publicPage(Login))} />
                 <Route exact path='/register' render={() => (publicPage(Register))} />
                 <Route exact path='/home' render={() => (privatePage(Home))} />
+                <Route exact path='/profile' render={() => (privatePage(Profile))} />
+                <Route component={NotFound} />
             </Switch>
         </Router>
     </div>

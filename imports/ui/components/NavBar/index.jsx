@@ -35,11 +35,11 @@ class NavBar extends React.Component {
 
     render() {
         const { user } = this.props;
-
+        const email = (!!user) && (user.emails) ? user.emails[0].address : '(email)';
         return (
             <div>
                 <Navbar color="light" light expand="md">
-                    <NavbarBrand href="/">Single Page App <small>test</small></NavbarBrand>
+                    <NavbarBrand tag={Link} to="/">Single Page App <small>test</small></NavbarBrand>
                     <NavbarToggler onClick={this._handleToggleNavbar} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
@@ -50,11 +50,11 @@ class NavBar extends React.Component {
                                             <NavLink tag={Link} to="/home">Home</NavLink>
                                         </NavItem>,
                                         <NavItem key={2}>
-                                            <NavLink tag={Link} to="/app">App</NavLink>
+                                            <NavLink tag={Link} to="/profile">Profile</NavLink>
                                         </NavItem>,
                                         <UncontrolledDropdown nav inNavbar key={3}>
                                             <DropdownToggle nav caret>
-                                                Account
+                                                {email}
                                             </DropdownToggle>
                                             <DropdownMenu right>
                                                 <DropdownItem onClick={this._handleLogout}>
@@ -80,8 +80,7 @@ class NavBar extends React.Component {
 }
 
 export default NavBarContainer = withTracker(() => {
-    this._userId = Meteor.userId();
     return {
-        user: Meteor.users.findOne({ _id: this._userId }),
+        user: Meteor.user(),
     };
 })(NavBar);
